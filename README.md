@@ -1,18 +1,19 @@
 # biometricECG
 An ECG based biometric model for specialised authentication systems
-
-Augmentation
 - [Confusion matrix][1]
 - [PhysioNet Tutorials][2]
 - [How to exctract ECG Features][3]
 - [ECG R-peak segmentation algorithm, Christov Segmenter][4]
-- For electrocardiogram (ECG) classification and arrhythmia detection, the common approach is to use power- or log-spectrogram to convert each ECG beat to a 2D image [12], [13]. However, there are certain drawbacks and limitations of using such deep CNNs. To start with it is known that they pose a high computational complexity that requires special hardware especially for training. Hence, 2D CNNs are not suitable for real-time applications on mobile and low-power/low-memory devices. Moreover, proper training of deep CNNs requires a very large training dataset in order to achieve a reasonable generalization capability. This may not be a viable option for many practical 1D signal applications where the labeled data is scarce.[5][5]
-[A Comparison of 1-D and 2-D Deep Convolutional Neural Networks
+- - [A Comparison of 1-D and 2-D Deep Convolutional Neural Networks
 in ECG Classification][6]
-
-#### Apply cropping 
-
-- Do I only select 1 ecg recording per person?
+    - ![Comparison of ECG beat classification methods on MIT-BIH arrhythmia database](media/2d_1d_comparison.png)
+- Use power- or log-spectrogram to convert each ECG beat to a 2D image. However, there are certain **drawbacks and limitations** of using such deep CNNs. 
+    - To start with it is known that they pose a **high computational complexity** that requires special hardware especially for training. 
+    - Hence, 2D CNNs are **not suitable for real-time applications** on mobile and low-power/low-memory devices. 
+	- Moreover, proper training of deep CNNs **requires a very large training dataset** in order to achieve a reasonable generalization capability. 
+	- This may not be a viable option for many practical 1D signal applications where the labeled data is scarce.[5][5]
+- Apply cropping??
+- Do I select equal number ecg record files per person?
 
 ### Notable sources & Readings
 1. https://github.com/hiredd/DeepECG-1
