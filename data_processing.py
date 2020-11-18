@@ -3,11 +3,14 @@
 
 # Data Processing: Converts .dat files
 # to .csv and generates annotated dataset
-
-import os
-import numpy as np
+from biosppy.signals import ecg
+import matplotlib.pyplot as plt
+from scipy import signal
 import pandas as pd
+import numpy as np
 import wfdb
+import cv2
+import os
 
 
 # Get data, convert .dat to .csv files
@@ -17,19 +20,78 @@ class GetData:
         self.database = 'ecgiddb'
 
         # crawls into every folder and sends .dat file to constructor
-        print('Converting to csv')
-        for folders in os.listdir(self.dir):
-            if folders.startswith('Person_'):
-                for record in os.listdir(os.path.join(self.dir, folders)):
-                    if record.endswith('dat'):
+        print('Converting to csv...')
+        folders = sorted(os.listdir(self.dir))
+        for folder in folders:
+            if folder.startswith('Person_'):
+                records = sorted(os.listdir(os.path.join(self.dir, folder)))
+                for record in records:
+                    if record.startswith('rec_') and record.endswith('dat'):
                         basename = record.split('.', 1)[0]
-                        self.constructor(folders, basename)
+                        self.constructor(folder, basename)
 
     def constructor(self, folder, filename):
         signals, fields = wfdb.rdsamp(filename, sampfrom=0,
                                       pn_dir=os.path.join(self.database, folder))
         df = pd.DataFrame(signals)
         df.to_csv(os.path.join(self.dir, folder, filename + '.' 'csv'), index=False)
+
+
+# Segment signals by R-peak using Christov segmenter
+def segment(array):
+    count = 1
+    signals = []
+    peaks = ecg.christov_segmenter(signal=array, sampling_rate=500)[0]
+    for i in (peaks[1:-1]):
+        diff1 = abs(peaks[count - 1] - i)
+        diff2 = abs(peaks[count + 1] - i)
+        x = peaks[count - 1] + diff1 // 2
+        y = peaks[count + 1] - diff2 // 2
+        sig = array[x:y]
+        signals.append(sig)
+        count += 1
+    return signals
+
+
+# Convert segmented signals into grayscale images
+def sigToImage(array, person, record):
+    fig = plt.figure(frameon=False)
+    plt.plot(array)
+    plt.xticks([]), plt.yticks([])
+    for spine in plt.gca().spines.values():
+        spine.set_visible(False)
+
+    folder = 'processedData/images/' + str(person) + '/'
+    if not os.path.exists(folder):
+        os.makedirs(folder)
+    filename = folder + str(record) + '.png'
+    fig.savefig(filename)
+
+    img_gray = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+    # img_gray = cv2.resize(img_gray, (128, 128), interpolation=cv2.INTER_LANCZOS4)
+    cv2.imwrite(filename, img_gray)
+    plt.cla()
+    plt.clf()
+    plt.close('all')
+
+
+# Transform 1-D array signals into 2-D array as spectrogram.
+# Take log and standardize spectrogram. (Not implemented)
+def fourierSpectrogram(array, person, record):
+    f, t, Sxx = signal.spectrogram(array)
+
+    fig = plt.figure(frameon=False)
+    plt.pcolormesh(t, f, Sxx, shading='gouraud', cmap='Greys')
+
+    pp = 'processedData/spectrogram/' + str(person) + '/'
+    if not os.path.exists(pp):
+        os.makedirs(pp)
+    filename = pp + str(record) + '.png'
+
+    fig.savefig(filename)
+    plt.cla()
+    plt.clf()
+    plt.close('all')
 
 
 # Generates features and labels
@@ -41,7 +103,6 @@ class ProcessData:
         self.gender_labels = []
         self.date_labels = []
         self.filtered_signal = pd.DataFrame()
-        self.unfiltered_signal = pd.DataFrame()
 
         print('Setting up data labels...')
         self.extract_labels(self.dir)
@@ -57,76 +118,71 @@ class ProcessData:
         self.extract_features(self.dir)
         print('Exporting feature set to csv...')
         self.filtered_signal.to_csv(os.path.join('processedData', 'filtereddata.csv'), index=False)
-        self.unfiltered_signal.to_csv(os.path.join('processedData', 'unfiltereddata.csv'), index=False)
         print('\nExport complete.')
 
-        if os.path.isfile(os.path.join('processedData', 'filtereddata' + '.' + 'csv')) \
-                and os.path.isfile(os.path.join('processedData', 'unfiltereddata' + '.' + 'csv')):
+        if os.path.isfile(os.path.join('processedData', 'filtereddata' + '.' + 'csv')):
             print('Data in processedData/ is now ready for training')
 
     # Extracts labels and features from rec_1.hea of each person
     def extract_labels(self, filepath):
-        for folders in os.listdir(filepath):
-            if folders.startswith('Person_'):
-                self.person_labels.append(folders)
-                for file in os.listdir(os.path.join(filepath, folders)):
+        folders = sorted(os.listdir(filepath))
+        for folder in folders:
+            if folder.startswith('Person_'):
+                self.person_labels.append(folder)
+                for file in os.listdir(os.path.join(filepath, folder)):
                     if file.startswith('rec_1.') and file.endswith('hea'):
-                        with open(os.path.join(filepath, folders, file), 'r') as f:
+                        with open(os.path.join(filepath, folder, file), 'r') as f:
                             array2d = [[str(token) for token in line.split()] for line in f]
                             self.age_labels.append(array2d[4][2])
                             self.gender_labels.append(array2d[5][2])
                             self.date_labels.append(array2d[6][3])
                         f.close()
 
-    # Extracts features from rec_1.csv of each person
+    # Extracts features from csv file of each person
     def extract_features(self, filepath):
         p = 0  # person counter
-        f = 0  # file counter
-        for folders in os.listdir(filepath):
-            if folders.startswith('Person_'):
+        folders = sorted(os.listdir(filepath))
+        for folder in folders:
+            if folder.startswith('Person_'):
                 p = p + 1
-                for file in os.listdir(os.path.join(filepath, folders)):
+                files = sorted(os.listdir(os.path.join(filepath, folder)))
+                f = 0  # file counter
+                for file in files:
                     if file.endswith('csv'):
-                        with open(os.path.join(filepath, folders, file), 'r') as x:
+                        with open(os.path.join(filepath, folder, file), 'r') as x:
                             f = f + 1
-                            features = pd.read_csv(x, header=[0, 1])
-                            featuresDF = pd.DataFrame(features)
-                            featuresDF = featuresDF.apply(pd.to_numeric)
-                            temp = [p]
-                            temp1 = [p]
+                            # read csv data for each person from col=1 (filtered sig)
+                            features = pd.read_csv(x)
+                            temp = [p]  # person ID index
+                            filteredData = []
+                            segmentedData = []
 
-                            for row in range(len(featuresDF)):
-                                temp.append(featuresDF.iat[row, 1])
-                                temp1.append(featuresDF.iat[row, 0])
-                            tempnp = np.asarray(temp, dtype=float)
-                            if tempnp.shape == (9999,):
-                                tempnp = np.append(tempnp, tempnp[9998])
-                            temp1np = np.asarray(temp1, dtype=float)
-                            if temp1np.shape == (9999,):
-                                temp1np = np.append(temp1np, tempnp[9998])
-                            self.dump_features(tempnp, 0)
-                            self.dump_features(temp1np, 1)
-                        x.close()
-        print('Number of files features extracted: ', f)
+                            for row in range(len(features)):
+                                filteredData.append(features.iat[row, 1])
+
+                            segmented = segment(filteredData)
+
+                            for lst in segmented:
+                                for e in lst:
+                                    temp.append(e)
+                                    segmentedData.append(e)
+
+                            sigToImage(np.array(segmentedData), p, f)
+                            fourierSpectrogram(np.array(segmentedData), p, f)
+
+                            tempNP = np.asarray(temp, dtype=float)
+                            if tempNP.shape == (9999,):
+                                tempNP = np.append(tempNP, tempNP[9998])
+
+                            self.dump_features(tempNP)
 
     # Append to a bigger global array
-    def dump_features(self, array, flag):
-        if not flag:
-            filteredDF = pd.DataFrame(array)
-            filteredDF = filteredDF.T
-            self.filtered_signal = self.filtered_signal.append(filteredDF, ignore_index=True)
-        if flag:
-            unfilteredDF = pd.DataFrame(array)
-            unfilteredDF = unfilteredDF.T
-            self.unfiltered_signal = self.unfiltered_signal.append(unfilteredDF, ignore_index=True)
-
-
-# Aligns dataset by first max peak
-class Augmentation:
-    def __init__(self):
-        self.maxs = []
+    def dump_features(self, array):
+        filteredDF = pd.DataFrame(array)
+        filteredDF = filteredDF.T
+        self.filtered_signal = self.filtered_signal.append(filteredDF, ignore_index=True)
 
 
 # ---------------- Driver ---------------- #
-GetData()
+# GetData()
 ProcessData()
