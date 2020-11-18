@@ -1,17 +1,18 @@
 # biometricECG
 An ECG based biometric model for specialised authentication systems
-- [Confusion matrix][1]
-- [PhysioNet Tutorials][2]
-- [How to exctract ECG Features][3]
-- [ECG R-peak segmentation algorithm, Christov Segmenter][4]
-- - [A Comparison of 1-D and 2-D Deep Convolutional Neural Networks
-in ECG Classification][6]
+- Confusion matrix [[1][1]]
+- PhysioNet Tutorials [[2][2]]
+- How to exctract ECG Features [[3][3]]
+- ECG **R-peak segmentation** algorithm, Christov Segmenter [[4][4]]
+- A Comparison of 1-D and 2-D Deep Convolutional Neural Networks
+in ECG Classification [[6][6]]
     - ![Comparison of ECG beat classification methods on MIT-BIH arrhythmia database](media/2d_1d_comparison.png)
-- Use power- or log-spectrogram to convert each ECG beat to a 2D image. However, there are certain **drawbacks and limitations** of using such deep CNNs. 
+- Convert ECG signal to a 2D image. However, there are certain **drawbacks and limitations** of using such deep CNNs. [[5][5]]
     - To start with it is known that they pose a **high computational complexity** that requires special hardware especially for training. 
-    - Hence, 2D CNNs are **not suitable for real-time applications** on mobile and low-power/low-memory devices. 
+    - Hence, 2D CNNs are **not suitable for real-time applications** on mobile and low-power/low-memory devices.
 	- Moreover, proper training of deep CNNs **requires a very large training dataset** in order to achieve a reasonable generalization capability. 
-	- This may not be a viable option for many practical 1D signal applications where the labeled data is scarce.[5][5]
+	- This may not be a viable option for many practical 1D signal applications where the labeled data is scarce.
+-   2D time-frequency spectrograms using short-time Fourier transform (STFT)?
 - Apply cropping??
 - Do I select equal number ecg record files per person?
 
@@ -22,8 +23,8 @@ in ECG Classification][6]
 1. https://github.com/ankur219/ECG-Arrhythmia-classification
 	1. https://medium.com/datadriveninvestor/ecg-arrhythmia-classification-using-a-2-d-convolutional-neural-network-33aa586bad67
 	2. https://arxiv.org/pdf/1804.06812.pdf
-1. This >>> https://github.com/lorenzobrusco/ECGNeuralNetwork
-1. https://github.com/gogowenzhang/ECG_Detector | Great source for fourier transformations
+1. https://github.com/lorenzobrusco/ECGNeuralNetwork
+1. Great source for fourier transformations:  https://github.com/gogowenzhang/ECG_Detector 
 
 [1]: <https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/#:~:text=A%20confusion%20matrix%20is%20a,related%20terminology%20can%20be%20confusing.>
 [2]: <https://archive.physionet.org/tutorials/creating-records.shtml>
