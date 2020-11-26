@@ -1,6 +1,8 @@
+import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 from biosppy.signals import ecg
 from scipy import signal
+from PIL import Image
 import pandas as pd
 import numpy as np
 import cv2
@@ -17,27 +19,29 @@ def segment(array):
         x = peaks[count - 1] + diff1 // 2
         y = peaks[count + 1] - diff2 // 2
         sig = array[x:y]
+        sigToImage(sig, p, count)
         signals.append(sig)
         count += 1
     return signals
 
 
 def sigToImage(array, person, record):
+
     fig = plt.figure(frameon=False)
-    plt.plot(array)
+    plt.plot(array, color='gray')
     plt.xticks([]), plt.yticks([])
     for spine in plt.gca().spines.values():
         spine.set_visible(False)
-
-    pp = 'processedData/dummy/' + str(person) + '/'
+    pp = 'processedData/dummy/' + str(person) + '/peak2/'
     if not os.path.exists(pp):
         os.makedirs(pp)
+    # filename = pp + str(record) + 'unseg' + '.png'
     filename = pp + str(record) + '.png'
     fig.savefig(filename)
 
-    img_gray = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
-    # img_gray = cv2.resize(img_gray, (128, 128), interpolation=cv2.INTER_LANCZOS4)
-    cv2.imwrite(filename, img_gray)
+    # img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+    # img = cv2.resize(img, (128, 128), interpolation=cv2.INTER_LANCZOS4)
+    # cv2.imwrite(filename, gray)
     plt.cla()
     plt.clf()
     plt.close('all')
@@ -58,7 +62,8 @@ def fourierSpectrogram(array, person, record):
     pp = 'processedData/dummy/spec/' + str(person) + '/'
     if not os.path.exists(pp):
         os.makedirs(pp)
-    filename = pp + str(record) + '.png'
+    filename = pp + str(record) + 'unseg' + '.png'
+    # filename = pp + str(record) + '.png'
 
     fig.savefig(filename)
     plt.cla()
@@ -66,9 +71,9 @@ def fourierSpectrogram(array, person, record):
     plt.close('all')
 
 
-p = 1
+p = 2
 fileCount = 1
-with open('data/Person_01/rec_1.csv', 'r') as file:
+with open('data/Person_02/rec_2.csv', 'r') as file:
     # read csv data for each person from col=1 (filtered sig)
     features = pd.read_csv(file)
     temp = [p]  # person ID index
@@ -82,12 +87,17 @@ with open('data/Person_01/rec_1.csv', 'r') as file:
 
     for lst in segmented:
         for e in lst:
-            temp.append(e)
             segmentedData.append(e)
 
-    sigToImage(np.array(segmentedData), p, fileCount)
-    fourierSpectrogram(np.array(segmentedData), p, fileCount)
+    # sigToImage(np.array(filteredData), p, fileCount)
+    # fourierSpectrogram(np.array(filteredData), p, fileCount)
+    '''
+    unSeg = pd.DataFrame(np.array(filteredData))
+    unSeg.to_csv(os.path.join('processedData/dummy', 'unSegData.csv'), index=False)
 
+    seg = pd.DataFrame(np.array(segmentedData))
+    seg.to_csv(os.path.join('processedData/dummy', 'segData.csv'), index=False)
+    '''
     tempNP = np.asarray(temp, dtype=float)
     if tempNP.shape == (9999,):
         tempNP = np.append(tempNP, tempNP[9998])
