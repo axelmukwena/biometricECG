@@ -38,6 +38,15 @@ in ECG Classification [[6][6]]
 1. Transforming an inertial sensor signal into images with large dimensions will allow a CNN to infer many correlations among dimensions, allowing it to extract detailed features and rich information from the original signal.
     - https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6263516/
 
+
+---
+##### 18 Dec, 2020
+1. How to augment signal images for cnn https://link.springer.com/chapter/10.1007/978-3-319-73600-6_8
+1. What is the [minimum sample size](https://www.researchgate.net/post/What_is_the_minimum_sample_size_required_to_train_a_Deep_Learning_model-CNN) required to train a Deep Learning model - CNN?
+1. Why it's necessary to have [equal classes](https://www.cs.cmu.edu/afs/cs/project/jair/pub/volume16/chawla02a-html/chawla2002.html)
+1. How to [augment sound](https://medium.com/@keur.plkar/audio-data-augmentation-in-python-a91600613e47) + [code](https://gist.github.com/keyurparalkar/5a49f696ed36ddce6526ab50e29e04ce)
+
+
 [1]: <https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/#:~:text=A%20confusion%20matrix%20is%20a,related%20terminology%20can%20be%20confusing.>
 [2]: <https://archive.physionet.org/tutorials/creating-records.shtml>
 [3]: <https://ieeexplore.ieee.org/document/6950168>

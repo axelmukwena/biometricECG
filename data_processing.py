@@ -11,6 +11,8 @@ import wfdb
 import os
 
 
+# Sampling rate for ECG-ID is 500 Hz
+
 # ************************************ Get data ************************************
 
 # Get data, convert .dat to .csv files
@@ -123,7 +125,7 @@ class ProcessData:
             signals.append(sig)
             count += 1
 
-    # Convert segmented signals into grayscale images
+    # Convert segmented signals into grayscale images, nparray
     def sigToImage(self, array, person, record, rPeak):
         fig = plt.figure(frameon=False)  # plt.figure(figsize=(20, 4))
         plt.plot(array, color='gray')
@@ -145,6 +147,11 @@ class ProcessData:
         self.processedData[self.totalRecords] = person, filename
 
 
+# Data Augmentation
+class Augmentation:
+    def __init__(self):
+        pass
+
 # ---------------- Driver ---------------- #
 # GetData()
-ProcessData()
+# ProcessData()
