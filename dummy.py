@@ -73,7 +73,7 @@ def fourierSpectrogram(array, person, record):
 
 p = 2
 fileCount = 1
-with open('data/Person_02/rec_2.csv', 'r') as file:
+with open('dataset/Person_02/rec_2.csv', 'r') as file:
     # read csv data for each person from col=1 (filtered sig)
     features = pd.read_csv(file)
     temp = [p]  # person ID index
