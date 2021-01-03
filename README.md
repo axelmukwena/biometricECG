@@ -5,11 +5,11 @@ An ECG based biometric model for specialised authentication systems
 - Confusion matrix [[1][1]]
 - PhysioNet Tutorials [[2][2]]
 - How to exctract ECG Features [[3][3]]
-- ECG **R-peak segmentation** algorithm, Christov Segmenter [[4][4]]
+- ECG **R-peak segmentation** algorithm, Christov Segmenter [[4][4]] and [[5][5]]
 - A Comparison of 1-D and 2-D Deep Convolutional Neural Networks
 in ECG Classification [[6][6]]
     - ![Comparison of ECG beat classification methods on MIT-BIH arrhythmia database](media/2d_1d_comparison.png)
-- Convert ECG signal to a 2D image. However, there are certain **drawbacks and limitations** of using such deep CNNs. [[5][5]]
+- Convert ECG signal to a 2D image. However, there are certain **drawbacks and limitations** of using such deep CNNs. [[7][7]]
     - To start with it is known that they pose a **high computational complexity** that requires special hardware especially for training. 
     - Hence, 2D CNNs are **not suitable for real-time applications** on mobile and low-power/low-memory devices.
 	- Moreover, proper training of deep CNNs **requires a very large training dataset** in order to achieve a reasonable generalization capability. 
@@ -17,6 +17,7 @@ in ECG Classification [[6][6]]
 -   2D time-frequency spectrograms using short-time Fourier transform (STFT)?
 - Apply cropping??
 - Do I select equal number ecg record files per person?
+- Image size?? https://arxiv.org/abs/2005.06902
 
 ### Notable sources & Readings
 1. https://github.com/hiredd/DeepECG-1
@@ -52,9 +53,15 @@ in ECG Classification [[6][6]]
 1. Setup and [Keras generator](https://machinelearningmastery.com/how-to-load-large-datasets-from-directories-for-deep-learning-with-keras/)
 1. How to divide data for training, validation and testing [here](https://glassboxmedicine.com/2019/09/15/best-use-of-train-val-test-splits-with-tips-for-medical-data/)
 
+##### 02 Jan, 2021
+1. [How][How] to add a new class to a deep learning model?
+2. 
+
 [1]: <https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/#:~:text=A%20confusion%20matrix%20is%20a,related%20terminology%20can%20be%20confusing.>
 [2]: <https://archive.physionet.org/tutorials/creating-records.shtml>
 [3]: <https://ieeexplore.ieee.org/document/6950168>
 [4]: <https://biosppy.readthedocs.io/en/stable/biosppy.signals.html>
-[5]: <https://ieeexplore.ieee.org/document/8682194>
+[5]: <https://www.semanticscholar.org/paper/Review-and-Comparison-of-Real-Time-Segmentation-for-Canento-Louren%C3%A7o/788a62ac3567e7793cfdf14aae65296101c43042>
 [6]: <https://arxiv.org/pdf/1810.07088.pdf>
+[7]: <https://ieeexplore.ieee.org/document/8682194>
+[How]: <https://datascience.stackexchange.com/questions/15656/how-to-add-a-new-category-to-a-deep-learning-model/57189#57189>

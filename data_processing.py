@@ -3,27 +3,26 @@
 
 # Data Processing: Converts .dat files
 # to .csv and generates annotated dataset
-from sklearn.model_selection import train_test_split
 from biosppy.signals import ecg
 import matplotlib.pyplot as plt
-from shutil import copyfile
+import pyrubberband as pyrb
 import pandas as pd
 import numpy as np
-import warnings
 # import helpers
-import librosa
+import pickle
 import wfdb
+import cv2
 import os
 
 
-# Sampling rate for ECG-ID is 500 Hz
+# Sampling rate, sr for ECG-ID is 500 Hz
 
 # ************************************ Get data ************************************
 
 # Get data, convert .dat to .csv files
 class GetData:
     def __init__(self):
-        self.dir = os.path.join(os.getcwd(), 'dataset')
+        self.dir = os.path.join(os.getcwd(), 'rawdata')
         self.database = 'ecgiddb'
 
         # crawls into every folder and sends .dat file to constructor
@@ -50,14 +49,12 @@ class GetData:
 # Generates features and labels
 class ProcessData:
     def __init__(self):
-        self.dir = os.path.join(os.getcwd(), 'dataset')
+        self.dir = os.path.join(os.getcwd(), 'rawdata')
         self.id = []
         self.person_labels = []
         self.age_labels = []
         self.gender_labels = []
         self.date_labels = []
-        self.processedData = {}
-        self.totalImages = 0
         self.person = 0
         self.record = 0
 
@@ -68,16 +65,12 @@ class ProcessData:
 
         print('\nExporting labels to csv...')
         ecglabelsDF = pd.DataFrame(ecglabels)
-        ecglabelsDF.to_csv(os.path.join('processedData', 'ecglabels.csv'), index=False)
+        ecglabelsDF.to_csv('ecglabels.csv', index=False)
         print('Export complete.')
 
-        print('\nSetting up data features...')
+        print('\nExporting features to images...')
         self.extract_features()
-        print('\nExporting processed data...')
-        self.processedDataDF = pd.DataFrame(self.processedData)
-        self.processedDataDF = self.processedDataDF.T
-        self.processedDataDF.to_csv(os.path.join('processedData', 'processedData.csv'), index=False)
-        print('Export complete.')
+        print('\nExport complete.')
 
     # Extracts labels and features from rec_1.hea of each person
     def extract_labels(self):
@@ -142,102 +135,86 @@ class ProcessData:
         noiseAdding = array + 0.009 * np.random.normal(0, 1, len(array))
         self.sigToImage(noiseAdding, 2, count)
 
-        # Permissible factor values = samplingRate / 10
-        timeShifting = np.roll(array, int(500 / 10))
+        # Permissible factor values = samplingRate / 100
+        timeShifting = np.roll(array, int(500 / 100))
         self.sigToImage(timeShifting, 3, count)
 
-        # Disable warnings such as below from librosa
-        # UserWarning: n_fft=2048 is too small for input signal of length=371
-        # See https://github.com/librosa/librosa/issues/1194
-        warnings.filterwarnings('ignore', category=UserWarning)
-
         # Permissible factor values = -5 <= x <= 5
-        pitchShifting = librosa.effects.pitch_shift(array, 500, n_steps=-5.0)
+        pitchShifting = pyrb.pitch_shift(array, 500, -3)
         self.sigToImage(pitchShifting, 4, count)
 
         # Permissible factor values = 0 < x < 1.0
-        factor = 0.99  # Yields the best reults without losing ecg wave shape
-        timeStretching = librosa.effects.time_stretch(array, factor)
+        factor = 0.95  # Yields the best reults without losing ecg wave shape
+        timeStretching = pyrb.time_stretch(array, 500, factor)
         self.sigToImage(timeStretching, 5, count)
 
     # Convert segmented signals into grayscale images, nparray
     def sigToImage(self, array, augmentType, count):
-        fig = plt.figure(frameon=False)  # plt.figure(figsize=(20, 4))
-        plt.plot(array, color='gray')
+        # Somehow with bbox_inches='tight', figsize is not
+        # accurate hence resize again with cv2
+        fig = plt.figure(frameon=False, figsize=(2.56, 2.56))  # plt.figure(figsize=(20, 4))
+        plt.plot(array)
         plt.xticks([]), plt.yticks([])
         for spine in plt.gca().spines.values():
             spine.set_visible(False)
 
-        folder = 'processedData/images/' + f'{self.person:02}' + '/'
+        folder = 'data/' + f'{self.person:02}' + '/'
         if not os.path.exists(folder):
             os.makedirs(folder)
         # Naming convention only accomodates tens place numbers 0-99
         filename = folder + f'{self.person:02}' + '_' + f'{self.record:02}' \
                    + '_' + f'{augmentType:02}' + '_' + f'{count:02}' + '.png'
-        fig.savefig(filename)
+        fig.savefig(filename, bbox_inches='tight')
+
+        # resize
+        img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
+        img = cv2.resize(img, (256, 256), interpolation=cv2.INTER_LANCZOS4)
+        cv2.imwrite(filename, img)
+
         plt.cla()
         plt.clf()
         plt.close('all')
-
-        # Add segment details to global record dictionary
-        self.totalImages += 1
-        self.processedData[self.totalImages] = self.person, filename
 
 
 # Set up data for training and testing
 class Setup:
     def __init__(self):
+        self.dir = os.path.join(os.getcwd(), 'data')
+        self.identity = {}
+
+        self.y, self.x = [], []
         self.x_train, self.x_val, self.x_test = [], [], []
         self.y_train, self.y_val, self.y_test = [], [], []
 
-        self.split()
-        self.move()
+        self.load()
 
-    def split(self):
-        data = pd.read_csv(os.path.join('processedData', 'processedData.csv'))
+    # Load the data
+    def load(self):
+        # Classes
+        self.identity = pd.read_csv('ecglabels.csv')
+        self.identity = self.identity.set_index('0').T.to_dict('list')
 
-        x = data.loc[:, '1'].values
-        y = data.loc[:, '0'].values
+        # Load images
+        person = 0
+        folders = sorted(os.listdir(self.dir))
+        for folder in folders:
+            if not folder.startswith('.'):
+                person += 1
+                images = sorted(os.listdir(os.path.join(self.dir, folder)))
+                for image in images:
+                    if image.endswith('png'):
+                        self.y.append(person)
+                        imageArray = cv2.imread(os.path.join(self.dir, folder, image), cv2.IMREAD_GRAYSCALE)
+                        self.x.append(imageArray)
+        self.x = np.array(self.x).reshape([-1, 256, 256, 1])
+        self.y = np.array(self.y)
 
-        train = 0.7
-        validation = 0.15
-        test = 0.15
-        # train 70% since test is 30%
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(
-            x, y, test_size=1 - train, shuffle=True, random_state=42)
-
-        # test 15%, validation 15%
-        self.x_val, self.x_test, self.y_val, self.y_test = train_test_split(
-            self.x_test, self.y_test, test_size=test / (test + validation), random_state=3)
+        pickleOut = open('data.pickle', 'wb')
+        pickle.dump((self.identity, self.y, self.x), pickleOut)
+        pickleOut.close()
 
         # Plot bar to show distribution of data
         # helpers.plotBar(y, y_train, y_val, y_test)
-
-    # Relocate & restructure data to prepapre training, val & testing
-    def move(self):
-        # Training data
-        for index, address in enumerate(self.x_train):
-            folder = 'data/train/' + f'{self.y_train[index]:02}' + '/'
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-            filename = folder + os.path.basename(address)
-            copyfile(address, filename)
-
-        # Validation data
-        for index, address in enumerate(self.x_val):
-            folder = 'data/validation/' + f'{self.y_val[index]:02}' + '/'
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-            filename = folder + os.path.basename(address)
-            copyfile(address, filename)
-
-        # Testing data
-        for index, address in enumerate(self.x_test):
-            folder = 'data/test/' + f'{self.y_test[index]:02}' + '/'
-            if not os.path.exists(folder):
-                os.makedirs(folder)
-            filename = folder + os.path.basename(address)
-            copyfile(address, filename)
 
 
 # ---------------- Driver ---------------- #
