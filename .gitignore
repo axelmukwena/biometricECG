@@ -133,4 +133,4 @@ dmypy.json
 /rawdata
 /data
 /trials
-.pickle
+*.pickle
