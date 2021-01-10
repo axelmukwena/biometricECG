@@ -152,13 +152,13 @@ class ProcessData:
     def sigToImage(self, array, augmentType, count):
         # Somehow with bbox_inches='tight', figsize is not
         # accurate hence resize again with cv2
-        fig = plt.figure(frameon=False, figsize=(2.56, 2.56))  # plt.figure(figsize=(20, 4))
+        fig = plt.figure(frameon=False, figsize=(4.8, 4.8))  # plt.figure(figsize=(20, 4))
         plt.plot(array)
         plt.xticks([]), plt.yticks([])
         for spine in plt.gca().spines.values():
             spine.set_visible(False)
 
-        folder = 'data/' + f'{self.person:02}' + '/'
+        folder = 'data480x480/' + f'{self.person:02}' + '/'
         if not os.path.exists(folder):
             os.makedirs(folder)
         # Naming convention only accomodates tens place numbers 0-99
@@ -168,7 +168,7 @@ class ProcessData:
 
         # resize
         img = cv2.imread(filename, cv2.IMREAD_GRAYSCALE)
-        img = cv2.resize(img, (256, 256), interpolation=cv2.INTER_LANCZOS4)
+        img = cv2.resize(img, (480, 480), interpolation=cv2.INTER_CUBIC)
         cv2.imwrite(filename, img)
 
         plt.cla()
@@ -179,7 +179,7 @@ class ProcessData:
 # Set up data for training and testing
 class Setup:
     def __init__(self):
-        self.dir = os.path.join(os.getcwd(), 'data')
+        self.dir = os.path.join(os.getcwd(), 'data480x480')
         self.identity = {}
 
         self.y, self.x = [], []
@@ -206,10 +206,9 @@ class Setup:
                         self.y.append(person)
                         imageArray = cv2.imread(os.path.join(self.dir, folder, image), cv2.IMREAD_GRAYSCALE)
                         self.x.append(imageArray)
-        self.x = np.array(self.x).reshape([-1, 256, 256, 1])
-        self.y = np.array(self.y)
 
-        pickleOut = open('data.pickle', 'wb')
+        print('Saving to pickle... Complete.')
+        pickleOut = open('data480x480.pickle', 'wb')
         pickle.dump((self.identity, self.y, self.x), pickleOut)
         pickleOut.close()
 
@@ -219,5 +218,5 @@ class Setup:
 
 # ---------------- Driver ---------------- #
 # GetData()
-# ProcessData()
+ProcessData()
 Setup()

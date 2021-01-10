@@ -54,8 +54,8 @@ in ECG Classification [[6][6]]
 1. How to divide data for training, validation and testing [here](https://glassboxmedicine.com/2019/09/15/best-use-of-train-val-test-splits-with-tips-for-medical-data/)
 
 ##### 02 Jan, 2021
-1. [How][How] to add a new class to a deep learning model?
-2. 
+1. [How][8] to add a new class to a deep learning model?
+1. [Discussion][9] on incremental learning for the model?? Check [this][10] paper
 
 [1]: <https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/#:~:text=A%20confusion%20matrix%20is%20a,related%20terminology%20can%20be%20confusing.>
 [2]: <https://archive.physionet.org/tutorials/creating-records.shtml>
@@ -64,4 +64,6 @@ in ECG Classification [[6][6]]
 [5]: <https://www.semanticscholar.org/paper/Review-and-Comparison-of-Real-Time-Segmentation-for-Canento-Louren%C3%A7o/788a62ac3567e7793cfdf14aae65296101c43042>
 [6]: <https://arxiv.org/pdf/1810.07088.pdf>
 [7]: <https://ieeexplore.ieee.org/document/8682194>
-[How]: <https://datascience.stackexchange.com/questions/15656/how-to-add-a-new-category-to-a-deep-learning-model/57189#57189>
+[8]: <https://datascience.stackexchange.com/questions/15656/how-to-add-a-new-category-to-a-deep-learning-model/57189#57189>
+[9]: <https://www.researchgate.net/post/What-are-the-techniques-for-incremental-training-of-Convolutional-Neural-Networks-without-doing-full-training-as-new-classes-are-added-to-data>
+[10]: <https://arxiv.org/abs/1807.09536>

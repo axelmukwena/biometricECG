@@ -13,8 +13,11 @@ import pickle
 np.random.seed(123)
 
 # load dataset
-pickleIn = open('data.pickle', 'rb')
+pickleIn = open('data480x480.pickle', 'rb')
 categories, y, x = pickle.load(pickleIn)
+
+x = np.array(x).reshape([-1, 480, 480, 1])
+y = np.array(y)
 
 # split data
 train, validation, test = 0.7, 0.15, 0.15
