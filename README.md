@@ -3,7 +3,7 @@
 ##### 01 Nov, 2020
 An ECG based biometric model for specialised authentication systems
 - Confusion matrix [[1][1]]
-- PhysioNet Tutorials [[2][2]]
+- PhysioNet Tutorials [[2][2]] | Just dicovered this dataset: http://thew-project.org/database/e-hol-03-0202-003.html
 - How to exctract ECG Features [[3][3]]
 - ECG **R-peak segmentation** algorithm, Christov Segmenter [[4][4]] and [[5][5]]
 - A Comparison of 1-D and 2-D Deep Convolutional Neural Networks
