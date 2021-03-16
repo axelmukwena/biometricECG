@@ -1,0 +1,7 @@
+name: ecgBiometric
+dependencies: 
+  - python
+  - scikit-learn
+  - pandas
+  - numpy
+  - matplotlib
