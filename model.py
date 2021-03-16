@@ -10,7 +10,7 @@ import tensorflow as tf
 import numpy as np
 import pickle
 
-np.random.seed(123)
+np.random.seed(123) 
 
 # load dataset
 pickleIn = open('data480x480.pickle', 'rb')
