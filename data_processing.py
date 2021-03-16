@@ -131,7 +131,7 @@ class ProcessData:
         self.sigToImage(array, 1, count)
 
         # Noise addition using normal distribution with mean = 0 and std =1
-        # Permissible noise factor value = x > 0.004
+        # Permissible noise factor value = x > 0.009
         noiseAdding = array + 0.009 * np.random.normal(0, 1, len(array))
         self.sigToImage(noiseAdding, 2, count)
 

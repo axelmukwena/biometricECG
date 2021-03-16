@@ -56,6 +56,8 @@ in ECG Classification [[6][6]]
 ##### 02 Jan, 2021
 1. [How][8] to add a new class to a deep learning model?
 1. [Discussion][9] on incremental learning for the model?? Check [this][10] paper
+1. https://ieeexplore.ieee.org/document/9032813
+1. https://run.unl.pt/bitstream/10362/75491/1/Bento_2019.pdf
 
 [1]: <https://www.dataschool.io/simple-guide-to-confusion-matrix-terminology/#:~:text=A%20confusion%20matrix%20is%20a,related%20terminology%20can%20be%20confusing.>
 [2]: <https://archive.physionet.org/tutorials/creating-records.shtml>
