@@ -134,5 +134,5 @@ dmypy.json
 /data256x256
 /data480x480
 /trials
-data*.ipynb # all notebook files at google colab
+data*.ipynb
 *.pickle
