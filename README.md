@@ -1,5 +1,7 @@
 Get in touch on Twitter <a href="https://twitter.com/axelmukwena">@axelmukwena</a>
 
+Be sure to checkout the <a href="https://github.com/axelmukwena/debbis-api">API</a> and <a href="https://github.com/axelmukwena/debbis">Ruby Web Client</a>
+
 [![GPLv3 license](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![](https://img.shields.io/badge/python-3.8%2B-green.svg)]()
 ![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
