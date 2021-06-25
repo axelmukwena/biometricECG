@@ -130,9 +130,6 @@ dmypy.json
 .DS_Store
 
 # data files
-/rawdata
-/data256x256
-/data480x480
+/data*
 /trials
-data*.ipynb
-*.pickle
+/models
