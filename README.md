@@ -1,4 +1,10 @@
-Axel MS Mukwena, DB727501 | *Supervisor:* Prof Liming Zhang | Computer Science, Faculty of Science and Technology | University of Macau
+Get in touch on Twitter <a href="https://twitter.com/axelmukwena">@axelmukwena</a>
+
+[![GPLv3 license](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![](https://img.shields.io/badge/python-3.5%2B-green.svg)]()
+![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)
+
+Axel MS Mukwena | *Supervisor:* Prof Liming Zhang | Computer Science, Faculty of Science and Technology | University of Macau
 
 # Documentation
 
