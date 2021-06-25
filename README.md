@@ -78,7 +78,7 @@ NB: This experiments is optimized for the MIT-BIH Dataset
     $ python3 run.py -cnn
     ```
 
-# DEBBIS-API: Simulation, API setup
+# DEBBIS-API: Simulation API setup
 
 The python API is available at https://github.com/axelmukwena/debbis-api
 
