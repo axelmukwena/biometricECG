@@ -2,11 +2,11 @@ Axel MS Mukwena, DB727501 | *Supervisor:* Prof Liming Zhang | Computer Science, 
 
 # Documentation
 
-## Deep ECG Based Biometric Identification System
+### Deep ECG Based Biometric Identification System
 
 The code to formulate Debbis is comprised of data processing and models development/training, API set up and client web application. Data processing development was on carried out on a **Macintosh 2.4 GHz Quad-Core Intel Core i7 16 GB RAM computer** and model developments were carried out on **Google Colab Premium running on a Tesla P100-PCIE-16GB GPU**.
 
-### Data Processing and Models Development
+## Data Processing and Models Development
 
 Data processing was developmed in Python 3 and hosted under the directory **root_folder/biometricECG**, preferably performed using the Pycharm software by JetBrains under a virtual environment.
 
@@ -32,7 +32,7 @@ $ sudo python3 -m pip install 'name'
 </figure>
 
 
-#### Procedure:
+# Procedure:
 NB: This experiments is optimized for the MIT-BIH Dataset
 
 1. Getting the data:
@@ -78,16 +78,17 @@ NB: This experiments is optimized for the MIT-BIH Dataset
     $ python3 run.py -cnn
     ```
 
-### NB: Simulations only work with data created using the BMD101 Sensor
+# DEBBIS-API: Simulation, API setup
 
-### Simulation: API setup
+The python API is available at https://github.com/axelmukwena/debbis-api
+
+#### NB: Simulations only work with data created using the BMD101 Sensor
 API setup was developmed in Python 3 and hosted under the directory **root_folder/debbis-api**. The API is developed using the Flask Framework to recieve HTTPS requests. The simulation utilizes the Siamese Neural Network Model since the SNN model completes all the requirements for Debbis. 
 
-After installation of all required packages and modules, obtain and copy the 'contents' of the SNN model titled **debbis** saved in **root_folder/biometricECG/models/snn/debbis/** and paste into **root_folder/debbis-api/model/**.
+After installation of all required packages and modules, obtain and copy the 'contents' of the SNN model titled **debbis** saved in **biometricECG/models/snn/debbis/** and paste into **debbis-api/model/**.
 
-File structure should resemble:
-- root_folder
-    - debbis-api
+File structure should resemble or similar:
+- debbis-api
         - model
             - assets
             - variables
@@ -101,11 +102,11 @@ $ python3 app.py
 
 which should start up the development server at the following url  http://127.0.0.1:5000/ 
 
-### Simulation: Client Web App
+# DEBBIS: Simulation, Client Web App
+
+The framework is available at https://github.com/axelmukwena/debbis
 
 The client web app is developed using the Ruby on Rails Framework and hosted under the directory **root_folder/debbis** .The RubyMine IDE by JetBrains is prefered. `ruby '3.0.0'` and `rails '~> 6.1.3'` should be installed.
-
-Once in the directory **root_folder/debbis**
 
 Install the needed gems (while skipping any gems needed only in production):
 
