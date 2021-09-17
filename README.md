@@ -8,9 +8,9 @@ Be sure to checkout the <a href="https://github.com/axelmukwena/debbis-api">API<
 
 Axel MS Mukwena | *Supervisor:* Prof Liming Zhang | Computer Science, Faculty of Science and Technology | University of Macau
 
-# Documentation
+<a href="#deep-ecg-based-biometric-identification-system-debbis">Documentation</a>
 
-### Deep ECG Based Biometric Identification System, DEBBIS
+### Deep ECG Based Biometric Identification System DEBBIS
 
 <figure>
   <img
