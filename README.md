@@ -10,7 +10,15 @@ Axel MS Mukwena | *Supervisor:* Prof Liming Zhang | Computer Science, Faculty of
 
 # Documentation
 
-### Deep ECG Based Biometric Identification System
+### Deep ECG Based Biometric Identification System, DEBBIS
+
+<figure>
+  <img
+       src="media/projectStructure.png"
+       alt="Debbis Project Structure."
+       width="700">
+       <figcaption>Figure 1: Debbis Project Structure</figcaption>
+</figure>
 
 The code to formulate Debbis is comprised of data processing and models development/training, API set up and client web application. Data processing development was on carried out on a **Macintosh 2.4 GHz Quad-Core Intel Core i7 16 GB RAM computer** and model developments were carried out on **Google Colab Premium running on a Tesla P100-PCIE-16GB GPU**.
 
@@ -27,7 +35,7 @@ $ sudo python3 -m pip install 'name'
   src="media/bmd101_device.png"
   alt="The beautiful MDN logo."
   width="562" height="310">
-  <figcaption>Figure 1: BMD101 Kit</figcaption>
+  <figcaption>Figure 2: BMD101 Kit</figcaption>
 </figure>
 
 
@@ -35,8 +43,8 @@ $ sudo python3 -m pip install 'name'
   <img
   src="media/gui_interface.png"
   alt="The beautiful MDN logo."
-  width="562" height="310">>
-  <figcaption>Figure 2: BMD101 GUI Interface</figcaption>
+  width="562" height="310">
+  <figcaption>Figure 3: BMD101 GUI Interface</figcaption>
 </figure>
 
 
