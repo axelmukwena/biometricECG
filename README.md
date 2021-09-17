@@ -23,8 +23,10 @@ Axel MS Mukwena | *Supervisor:* Prof Liming Zhang | Computer Science, Faculty of
          <a href="#project-structure">Project Structure</a>
   </figcaption>
 </figure>
+
 <br>
 <br>
+
 The code to formulate Debbis is comprised of data processing and models development/training, API set up and client web application. Data processing development was on carried out on a **Macintosh 2.4 GHz Quad-Core Intel Core i7 16 GB RAM computer** and model developments were carried out on **Google Colab Premium running on a Tesla P100-PCIE-16GB GPU**.
 
 ## Data Processing and Models Development
