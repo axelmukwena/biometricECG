@@ -8,6 +8,9 @@ Be sure to checkout the <a href="https://github.com/axelmukwena/debbis-api">API<
 
 Axel MS Mukwena | *Supervisor:* Prof Liming Zhang | Computer Science, Faculty of Science and Technology | University of Macau
 
+# Academic Report
+[Final Year Project](https://github.com/axelmukwena/biometricECG/blob/main/Final_Year_Project_Report.pdf)
+<a href="#academic-report">Academic Report</a>
 # Documentation
 
 ### Deep ECG Based Biometric Identification System, DEBBIS
