@@ -217,7 +217,7 @@ Just make sure env exists, otherwise create another one
 
 - Go to folder
 
-      $ cd folder/folder/famly
+      $ cd folder/folder/biometricECG
 
 - Activate env
 
