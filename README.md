@@ -81,10 +81,10 @@ NB: This experiments is optimized for the MIT-BIH Dataset
         1. When desired time is reached, click 'Stop', save the file in the desired location.
         1. In the desired location above, obtain the text files and copy them into **root_folder/biometricECG/data/raw/bmd101/raw/unique_id_folder/**
     
-1. Once the data is fully set up, run the following commands in **root_folder/biometricECG/** to extract signals into readable **csv** file formats
+1. Go to root folder
 
    ```shell
-   $ cd folder/folder/famly
+   $ cd folder/folder/biometricECG
    ```
       
 1. Install virtualenv
@@ -124,7 +124,7 @@ NB: This experiments is optimized for the MIT-BIH Dataset
     $ python3 -m pip install -r requirements.txt
     ```
 
-1. Run one of the scripts...
+1. Once the data is fully set up, run the following commands to extract signals into readable **csv** file formats
     ```shell
     $ python3 run.py -s-mit
     $ python3 run.py -s-ecgid
