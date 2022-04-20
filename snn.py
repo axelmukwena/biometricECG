@@ -10,20 +10,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
 from sklearn.model_selection import train_test_split
-from tensorflow.keras import backend as K
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import Activation
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.layers import Conv1D
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import Input
-from tensorflow.keras.layers import Lambda
-from tensorflow.keras.layers import MaxPool1D
-from tensorflow.keras.models import Model
-from tensorflow.keras.optimizers import Adam
+from keras import backend as K
+from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
+from keras.callbacks import TensorBoard
+from keras.layers import Activation
+from keras.layers import BatchNormalization
+from keras.layers import Conv1D
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import Input
+from keras.layers import Lambda
+from keras.layers import MaxPool1D
+from keras.models import Model
 from tqdm import tqdm
 
 import utils
@@ -34,25 +33,25 @@ EPOCHS = 10
 BS = 64
 LR = 0.00001
 decay = LR / EPOCHS
-adam = Adam(learning_rate=LR, decay=decay)
 
 
-def create_pairs(xxx, yyy, ps):
+# ps=people
+def create_pairs(y, x, ps):
     yy, xx = [], []
 
-    indices = [np.where(yyy == i)[0] for i in ps]
+    indices = [np.where(y == i)[0] for i in ps]
     dic = {ps[j]: indices[j] for j in range(len(ps))}
-    for i in tqdm(range(len(xxx))):
-        current_image = xxx[i]
-        label = yyy[i]
+    for i in tqdm(range(len(x))):
+        current_image = x[i]
+        label = y[i]
         ia = np.random.choice(dic[label], replace=False)
-        positive_image = xxx[ia]
+        positive_image = x[ia]
         xx.append([current_image, positive_image])
         yy.append(1)
 
-        choices = np.where(yyy != label)[0]
+        choices = np.where(y != label)[0]
         ib = np.random.choice(choices, replace=False)
-        negative_image = xxx[ib]
+        negative_image = x[ib]
         xx.append([current_image, negative_image])
         yy.append(0)
 

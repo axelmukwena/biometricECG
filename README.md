@@ -79,8 +79,52 @@ NB: This experiments is optimized for the MIT-BIH Dataset
         1. Optimal recording takes around 20-25 minutes
         1. When desired time is reached, click 'Stop', save the file in the desired location.
         1. In the desired location above, obtain the text files and copy them into **root_folder/biometricECG/data/raw/bmd101/raw/unique_id_folder/**
+    
 1. Once the data is fully set up, run the following commands in **root_folder/biometricECG/** to extract signals into readable **csv** file formats
+
+   ```shell
+   $ cd folder/folder/famly
+   ```
+      
+1. Install virtualenv
+
+    ```shell   
+    # Mac OS
+    $ sudo -H pip install virtualenv
+          
+    # Windows
+    $ pip install virtualenv
     ```
+  
+1. Create a virtual environment
+
+    ```shell
+    # Mac OS
+    $ virtualenv -p python3 venv
+    # Windows
+    $ python3 -mvenv venv
+    ```
+      
+1. Activate the environment
+
+    ```shell
+    # Mac OS
+    $ source venv/bin/activate
+    # Windows
+    $ venv\Scripts\activate
+    ```
+
+1. Install the requirements.txt
+
+    ```shell
+    # Mac OS
+    $ pip3 install -r requirements.txt
+    # Windows
+    $ python3 -m pip install -r requirements.txt
+    ```
+
+1. Run one of the scripts...
+    ```shell
     $ python3 run.py -s-mit
     $ python3 run.py -s-ecgid
     $ python3 run.py -s-bmd
@@ -163,3 +207,40 @@ The server should start and the app should be accessible at http://localhost:300
     1. Name, Age, Gender are optional
 1. Once a member is enrolled, you will be redirected to the Members page, where you can upload the text file title starting **ECGLog...** obtained from the BMD101 Sensor. After submiting templates, the data will be sent to the Python API and the most representative ECG segments of that individual will be selected and saved.
 1. Once templates are successfully saved, any enrolled member can use the home page, http://localhost:3000/, upload a new text file title starting **ECGLog...** obtained from the BMD101 Sensor, submit by clicking access and if such member is enrolled, they will be taken to an only-member accessible page.
+
+
+## Notes
+
+### Installing or updating packages
+Just make sure env exists, otherwise create another one
+
+- Go to folder
+
+      $ cd folder/folder/famly
+
+- Activate env
+
+      # Mac OS
+      $ source venv/bin/activate
+
+      # Windows
+      $ venv\Scripts\activate
+  
+- Install or update package
+
+      # specific command
+      # MacOS
+      $ pip install --upgrade package
+
+- Update *requirements.txt*
+
+      $ pip freeze > requirements.txt
+
+### Deactivate env
+- Deactivate env
+
+      # Mac OS
+      $ deactivate
+
+      # Windows
+      $ 

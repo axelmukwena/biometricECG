@@ -3,7 +3,6 @@
 
 import os
 
-from matplotlib import pyplot as plt
 from scipy.signal import filtfilt
 import pandas as pd
 import numpy as np
@@ -21,7 +20,9 @@ def filters(array, n):
 # Sampling rate, sr for MIT-BIH is 360 Hz
 # Get data, convert .dat to .csv files
 def constructor(directory, filename, db):
-    signals, fields = wfdb.rdsamp(filename, pn_dir=os.path.join(db))
+    signals, fields = wfdb.rdsamp(os.path.join(directory, filename))
+    # Read from online Physionet Dataset
+    # signals, fields = wfdb.rdsamp(filename, pn_dir=db)
     a = [m[0] for m in signals]  # get filtered signals
 
     df = pd.DataFrame(a)

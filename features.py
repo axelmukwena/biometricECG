@@ -136,11 +136,11 @@ class GetFeatures:
             how_many.append(len(wave))
             count += 1
 
-        plt.show()
-        print("Len per Wave", how_many)
-        print("Mean per Wave", np.mean(how_many))
-        print("How many", len(how_many))
-        print("Total", len(how_many) * 9)
+        # plt.show()
+        # print("Len per Wave", how_many)
+        # print("Mean per Wave", np.mean(how_many))
+        # print("How many", len(how_many))
+        # print("Total", len(how_many) * 9)
 
     # Augment each signal and convert call function to convert it to image
     def augment(self, array, times):
@@ -190,7 +190,7 @@ class GetFeatures:
         if which == "pitch_shifting":
             with warnings.catch_warnings():
                 warnings.simplefilter('ignore', UserWarning)
-                pitch_shifting = librosa.effects.pitch_shift(array, 500, n_steps=float(factor))
+                pitch_shifting = librosa.effects.pitch_shift(array, sr=500, n_steps=float(factor))
             pitch_shifting = resamp(pitch_shifting, times)
             self.signals.append(pitch_shifting)
             plt.plot(pitch_shifting)

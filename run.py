@@ -39,13 +39,13 @@ def main():
     elif arg.signals_ecgid:
         try:
             gs = GetSignals()
-            gs.mit(ecgid)
+            gs.ecgid(ecgid)
         except Exception as e:
             print(e)
     elif arg.signals_bmd:
         try:
             gs = GetSignals()
-            gs.mit(bmd101)
+            gs.bmd(bmd101)
         except Exception as e:
             print(e)
 
@@ -58,13 +58,13 @@ def main():
     elif arg.features_ecgid:
         try:
             feats = GetFeatures()
-            feats.features('ecgid', mit)
+            feats.features('ecgid', ecgid)
         except Exception as e:
             print(e)
     elif arg.features_bmd:
         try:
             feats = GetFeatures()
-            feats.features('bmd', mit)
+            feats.features('bmd', bmd101)
         except Exception as e:
             print(e)
 

@@ -41,12 +41,11 @@ class Setup:
                     self.x.append(wave)
                 how.append(count)
                 who.append(basename)
-                print("Person", basename)
-                print("x len", len(self.x))
+                print("Person:", basename, "|", "x wave length:", len(self.x))
 
         if who:
-            print(who)
-            print(how)
+            # print(who)
+            # print(how)
             print('Saving to pickle... Complete.')
             pickle_out = open('data/ready/pickles/' + str(self.name) + '.pickle', 'wb')
             pickle.dump((people, self.y, self.x), pickle_out)

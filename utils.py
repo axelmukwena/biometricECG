@@ -12,10 +12,10 @@ def load_data(where):
     pickleIn = open(where, 'rb')
     ps, yy, xx = pickle.load(pickleIn)
     yy = np.array(yy)
+    xx = np.array(xx)
 
     # Normalize data
-    print('Before Normalizing: Min:', xx.min(), 'Max:', xx.max())
-    xx = np.array(xx)
+    print('Before Normalizing: Min:', xx.min(), 'Max:', xx.max(), "\n")
     xx = (xx - xx.min()) / (xx.max() - xx.min())
     print('After Normalizing: Min:', xx.min(), 'Max:', xx.max(), "\n")
 

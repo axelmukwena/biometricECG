@@ -12,19 +12,18 @@ import numpy as np
 from sklearn.metrics import classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelBinarizer
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.callbacks import TensorBoard
-from tensorflow.keras.layers import Activation
-from tensorflow.keras.layers import BatchNormalization
-from tensorflow.keras.layers import Conv1D
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import Flatten
-from tensorflow.keras.layers import MaxPool1D
-from tensorflow.keras.layers import concatenate
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.optimizers import Adam
+from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
+from keras.callbacks import TensorBoard
+from keras.layers import Activation
+from keras.layers import BatchNormalization
+from keras.layers import Conv1D
+from keras.layers import Dense
+from keras.layers import Dropout
+from keras.layers import Flatten
+from keras.layers import MaxPool1D
+from keras.layers import concatenate
+from keras.models import Sequential
 
 import utils
 
@@ -34,7 +33,6 @@ EPOCHS = 100
 BS = 64
 LR = 0.00001
 decay = LR / EPOCHS
-adam = Adam(learning_rate=LR, decay=decay)
 
 
 def splits(yy, xx, sig_dims):
@@ -116,7 +114,7 @@ def train(folder, sig_dims, data):
 
     print(m.summary())
 
-    m.compile(optimizer=adam, loss="categorical_crossentropy", metrics=["accuracy"])
+    m.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
 
     STEPS_PER_EPOCH = len(x_train) // BS
     VAL_STEPS_PER_EPOCH = len(x_valid) // BS
